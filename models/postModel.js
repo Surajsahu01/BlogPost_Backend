@@ -1,8 +1,8 @@
 
-const { type } = require("express/lib/response");
+// const { type } = require("express/lib/response");
 const mongoose = require("mongoose");
 
-const postSchema = mongoose.Schema({
+const postSchema = new mongoose.Schema({
     title : {
         type :String,
         required : true,

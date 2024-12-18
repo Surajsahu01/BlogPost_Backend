@@ -10,7 +10,7 @@ exports.createComment = async(req,res) =>{
 
         // crete a comment object
         const comment = new Comment({
-            post,user,body
+            post,user,body,
         });
 
         // save the new comment into the database
@@ -18,7 +18,7 @@ exports.createComment = async(req,res) =>{
 
         // find the post by Id, ass new comment to its comments array
         const updatedPost = await Post.findByIdAndUpdate(post, {$push: {comments: savedComment._id}}, {new:true})
-                            .populate("coments")
+                            .populate("comments")
                             .exec();
 
         res.json({
@@ -31,3 +31,23 @@ exports.createComment = async(req,res) =>{
             });
     }
 };
+
+exports.deleteCreateComment = async(req,res) =>{
+    try{
+        const {post,comment} = req.body;
+
+        const deletComment = await Comment.findOneAndDelete({post:post, _id:comment});
+
+        const  postUpdate = await Post.findByIdAndUpdate(post, {$pull: {comment:deletComment._id} }, {new:true});
+
+        res.json({
+            post:postUpdate,
+        })
+
+    }
+    catch(error){
+        return res.status(500).json({
+            error: "Error while deleting comments.",
+        }); 
+    }
+}

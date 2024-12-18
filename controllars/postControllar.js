@@ -21,3 +21,19 @@ exports.createPost = async(req,res) =>{
 
     }
 }
+
+exports.getAllPosts = async (req,res) =>{
+    try{
+        const posts = await Post.find().populate("comments").exec();
+        res.json({
+            posts,
+        })
+
+    }
+    catch(error){
+        return res.status(400).json({
+            error : "Error while fatcing post",
+        });
+
+    }
+}

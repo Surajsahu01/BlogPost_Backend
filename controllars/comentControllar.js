@@ -3,7 +3,7 @@ const Comment = require("../models/comentModel");
 
 // build a logic
 
-exports.createComment = async(req,res) =>{
+exports.createComment = async (req,res) => {
     try{
         // fetch data from req body
         const {post,user,body} = req.body;
